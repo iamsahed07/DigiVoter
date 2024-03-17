@@ -7,6 +7,7 @@ import VoterRegistration from "./views/VoterRegistration";
 import Information from "./views/Information";
 import VotingArea from "./views/VotingArea";
 import Result from "./views/Result";
+import Login from "./pages/Login";
 
 function App() {
   return (

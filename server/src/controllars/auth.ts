@@ -1,6 +1,8 @@
 import { CreateUser, VerifyWhenLogIn } from "#/@types/user";
 import EmailVerificationToken from "#/models/emailVerificationToken";
 import User from "#/models/user";
+import Election from "#/models/user";
+
 import { generateToken } from "#/utils/helper";
 import {
   sendVerificationMail,
@@ -23,13 +25,6 @@ export const create = async (req: CreateUser, res: Response) => {
     mobile,
     address,
   });
-
-  const token = generateToken();
-  await EmailVerificationToken.create({
-    owner: user._id,
-    token,
-  });
-  sendVerificationMail(token, { name, email, userId: user._id.toString() });
   res.json({
     user: {
       id: user._id,

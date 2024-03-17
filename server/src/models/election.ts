@@ -14,7 +14,8 @@ const electionSchema = new Schema<electionDocument>(
     status: {
       type: String,
       enum: status,
-      required:true
+      required:true,
+      default: "UPCOMING"
     },
     candidates: [
       {

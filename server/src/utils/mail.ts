@@ -1,15 +1,17 @@
 import { generateTemplate } from "#/mail/template";
 import path from "path";
-import { MAILTRAP_USER, MAILTRAP_PASS, VERIFICATION_EMAIL, SIGN_IN_URL } from "./variables";
+import { APP_PASS,APP_USER,SIGN_IN_URL } from "./variables";
 import nodemailer from 'nodemailer'
 import EmailVerificationToken from "#/models/emailVerificationToken";
 const generateMailTransporter = () =>{
     var transport = nodemailer.createTransport({
-        host: "sandbox.smtp.mailtrap.io",
-      port: 2525,
+        host: "smtp.gmail.com",
+        service:'gmail',
+        port: 587,
+        secure: false,
       auth: {
-        user: MAILTRAP_USER,
-        pass: MAILTRAP_PASS,
+        user: APP_PASS,
+        pass: APP_USER,
       },
     });
     return transport;
@@ -33,7 +35,10 @@ const welcomeMessage = `Hi ${name}, welcome to Voting Platform! There are so muc
 const transport = generateMailTransporter();
 transport.sendMail({
   to: email,
-  from: VERIFICATION_EMAIL,
+  from: {
+    name:'VOTING SYSTEM',
+    address:APP_USER
+  },
   subject: "Welcome message",
   // html: `<h1>Your verification token is ${token}</h1>`
   html: generateTemplate({
@@ -72,7 +77,10 @@ const message = "We just received a request that you forget your password. No pr
 const transport = generateMailTransporter();
 transport.sendMail({
   to: email,
-  from: VERIFICATION_EMAIL,
+  from: {
+    name:'VOTING SYSTEM',
+    address:APP_USER
+  },
   subject: "Reset Password Link",
   // html: `<h1>Your verification token is ${token}</h1>`
   html: generateTemplate({
@@ -104,7 +112,10 @@ export const sendPassResetSuccessEmail = async (name:string,email:string) => {
   const transport = generateMailTransporter();
   transport.sendMail({
     to: email,
-    from: VERIFICATION_EMAIL,
+    from: {
+      name:'VOTING SYSTEM',
+      address:APP_USER
+    },
     subject: "Reset Password Successfully",
     // html: `<h1>Your verification token is ${token}</h1>`
     html: generateTemplate({

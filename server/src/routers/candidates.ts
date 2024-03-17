@@ -1,7 +1,8 @@
-// import { addCandidate } from "#/controllars/candidate";
-// import { mustAuth } from "#/middleware/auth";
-// import { Router } from "express";
+import { addCandidate, getAllCandidateBasedOnAssembly } from "#/controllars/candidate";
+import { mustAuth } from "#/middleware/auth";
+import { Router } from "express";
 
-// const router = Router();
-// router.post("/add-candidate", mustAuth, addCandidate);
-// export default router;
+const router = Router();
+router.post("/add-candidate", addCandidate);
+router.post("/get-based-on-assembly", getAllCandidateBasedOnAssembly)
+export default router;

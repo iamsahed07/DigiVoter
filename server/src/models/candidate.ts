@@ -4,6 +4,7 @@ import { Model, Schema, model } from "mongoose";
 interface candidateDocument {
   candidateName: string;
   party: partyType;
+  assembly: string
 }
 const candidateSchema = new Schema<candidateDocument>(
   {
@@ -15,6 +16,9 @@ const candidateSchema = new Schema<candidateDocument>(
       type: String,
       enum: party,
     },
+    assembly:{
+      type: String
+    }
   },
   { timestamps: true }
 );
