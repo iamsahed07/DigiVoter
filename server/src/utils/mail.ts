@@ -2,13 +2,10 @@ import { generateTemplate } from "#/mail/template";
 import path from "path";
 import { APP_PASS,APP_USER,SIGN_IN_URL } from "./variables";
 import nodemailer from 'nodemailer'
-import EmailVerificationToken from "#/models/emailVerificationToken";
 const generateMailTransporter = () =>{
     var transport = nodemailer.createTransport({
         host: "smtp.gmail.com",
-        service:'gmail',
-        port: 587,
-        secure: false,
+        authMethod:"PLAIN",
       auth: {
         user: APP_PASS,
         pass: APP_USER,
