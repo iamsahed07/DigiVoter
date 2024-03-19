@@ -1,6 +1,6 @@
 import { isValidObjectId } from "mongoose";
 import * as yup from "yup";
-import { locations } from "./locations";
+import { States, Assembly } from "./assembly";
 import { party } from "#/@types/user";
 export const CreateUserSchema = yup.object().shape({
   name: yup
@@ -15,11 +15,16 @@ export const CreateUserSchema = yup.object().shape({
     .trim()
     .length(12, "Invalid adhar")
     .required("Adhar is missing!"),
-  location: yup
+  state: yup
     .string()
     .trim()
-    .oneOf(locations, "Invalid location!")
+    .oneOf(States, "Invalid location!")
     .required("location is missing!"),
+  assembly: yup
+    .string()
+    .trim()
+    .oneOf(Assembly, "Invalid Assembly!")
+    .required("Assembly is missing!"),
 
   dob: yup
     .date()
@@ -68,7 +73,6 @@ export const AdharOrMobileValidation = yup.object().shape({
   }),
 });
 
-
 // export const updatePasswordSchema = yup.object().shape({
 //   token: yup.string().trim().required("Invalid token!"),
 //   userId: yup
@@ -101,7 +105,7 @@ export const CandidateValidation = yup.object().shape({
   location: yup
     .string()
     .trim()
-    .oneOf(locations, "Invalid location!")
+    .oneOf(States, "Invalid location!")
     .required("location is missing!"),
   candidateName: yup.string().trim().required("candidateName is missing!"),
   party: yup

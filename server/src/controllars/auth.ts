@@ -4,42 +4,30 @@ import User from "#/models/user";
 import Election from "#/models/user";
 
 import { generateToken } from "#/utils/helper";
-import {
-  sendVerificationMail,
-} from "#/utils/mail";
-import { RequestHandler, Response,Request } from "express";
+import { sendVerificationMail } from "#/utils/mail";
+import { RequestHandler, Response, Request } from "express";
 
 import { JWT_SECRET } from "#/utils/variables";
 import jwt from "jsonwebtoken";
 
 export const create = async (req: CreateUser, res: Response) => {
-  const { email, name, adhar, location, dob, voterId, mobile, address } =
+  const { email, name, adhar, state, assembly, dob, voterId, mobile, address } =
     req.body;
   const user = await User.create({
     email,
     name,
     adhar,
-    location,
+    state,
+    assembly,
     dob,
     voterId,
     mobile,
     address,
   });
   res.json({
-    user: {
-      id: user._id,
-      email,
-      name,
-      adhar,
-      location,
-      dob,
-      voterId,
-      mobile,
-      address,
-    },
+    message: "User create successfully",
   });
 };
-
 
 export const sendVerificationToken: RequestHandler = async (
   req: VerifyWhenLogIn,
@@ -59,10 +47,10 @@ export const sendVerificationToken: RequestHandler = async (
     user = await User.findOne({ mobile });
   }
   if (!user)
-  return res
-.status(403)
+    return res
+      .status(403)
       .json({ error: "Invalid request!! User not exists!!" });
-      //any token already exist first remove it
+  //any token already exist first remove it
   await EmailVerificationToken.findOneAndDelete({
     owner: user._id,
   });
@@ -71,13 +59,13 @@ export const sendVerificationToken: RequestHandler = async (
     owner: user._id,
     token,
   });
-  
+
   sendVerificationMail(token, {
     name: user?.name,
     email: user?.email,
     userId: user?._id.toString(),
   });
-  
+
   res.json({ message: "Please check your mail." });
 };
 
@@ -102,7 +90,6 @@ export const signIn: RequestHandler = async (
       .status(403)
       .json({ error: "Invalid request!! User not exists!!" });
 
-
   const verificationToken = await EmailVerificationToken.findOne({
     owner: user._id,
   });
@@ -122,35 +109,32 @@ export const signIn: RequestHandler = async (
   await user.save();
 
   await EmailVerificationToken.findByIdAndDelete(verificationToken._id);
-    res.json({
-      profile: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        verified: user.verified,
-        adhar: user.adhar,
-        location: user.location,
-        role: user.role,
-        dob:user.dob,
-        voterId: user.voterId,
-        mobile: user.mobile,
-        address: user.address
-      },
-      jwttoken,
-    });
+  res.json({
+    profile: {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      verified: user.verified,
+      adhar: user.adhar,
+      location: user.state,
+      role: user.role,
+      dob: user.dob,
+      voterId: user.voterId,
+      mobile: user.mobile,
+      address: user.address,
+    },
+    jwttoken,
+  });
 };
 export const getUserDetails: RequestHandler = async (
-  req:Request,
+  req: Request,
   res: Response
 ) => {
-    res.json({
-      profile: req.user,
-      token: req.token
-    });
+  res.json({
+    profile: req.user,
+    token: req.token,
+  });
 };
-
-
-
 
 export const logOut: RequestHandler = async (req, res) => {
   const { fromAll } = req.query;

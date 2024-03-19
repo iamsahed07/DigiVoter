@@ -4,11 +4,12 @@ import { APP_PASS,APP_USER,SIGN_IN_URL } from "./variables";
 import nodemailer from 'nodemailer'
 const generateMailTransporter = () =>{
     var transport = nodemailer.createTransport({
-        host: "smtp.gmail.com",
-        authMethod:"PLAIN",
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true,
       auth: {
-        user: APP_PASS,
-        pass: APP_USER,
+        user: APP_USER,
+        pass: APP_PASS,
       },
     });
     return transport;
@@ -33,8 +34,8 @@ const transport = generateMailTransporter();
 transport.sendMail({
   to: email,
   from: {
-    name:'VOTING SYSTEM',
-    address:APP_USER
+    name: "DigiVoter",
+    address: APP_USER,
   },
   subject: "Welcome message",
   // html: `<h1>Your verification token is ${token}</h1>`
@@ -75,8 +76,8 @@ const transport = generateMailTransporter();
 transport.sendMail({
   to: email,
   from: {
-    name:'VOTING SYSTEM',
-    address:APP_USER
+    name: "DigiVoter",
+    address: APP_USER,
   },
   subject: "Reset Password Link",
   // html: `<h1>Your verification token is ${token}</h1>`
@@ -110,8 +111,8 @@ export const sendPassResetSuccessEmail = async (name:string,email:string) => {
   transport.sendMail({
     to: email,
     from: {
-      name:'VOTING SYSTEM',
-      address:APP_USER
+      name: "DigiVoter",
+      address: APP_USER,
     },
     subject: "Reset Password Successfully",
     // html: `<h1>Your verification token is ${token}</h1>`

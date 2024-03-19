@@ -1,10 +1,9 @@
 import express from "express";
 import dotenv from 'dotenv'
-dotenv.config({path:'../.env'})
-import {connect} from '#/db/dbConfig'
+dotenv.config()
+import "./db/dbConfig";
 const app = express();
 const PORT = process.env.PORT || 8000;
-connect();
 import authRouter from '#/routers/auth';
 import elections from "#/routers/elections"
 import candidatesRouter from "#/routers/candidates";

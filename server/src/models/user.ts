@@ -1,7 +1,7 @@
 import { role } from "#/@types/user";
-import { locations, locationsTypes } from "#/utils/locations";
+import { States, Assembly, assemblyTypes, statesTypes } from "#/utils/assembly";
 import { compare, hash } from "bcrypt";
-import { Model, ObjectId, Schema, model} from "mongoose";
+import { Model, ObjectId, Schema, model } from "mongoose";
 import { Date } from "mongoose";
 export interface UserDocument {
   _id: ObjectId;
@@ -9,17 +9,16 @@ export interface UserDocument {
   email: string;
   verified: boolean;
   tokens: string[]; //store auth tokens
-  location: locationsTypes;
+  state: statesTypes;
+  assembly: assemblyTypes;
   adhar: string;
   role: string;
-  dob:string;
+  dob: string;
   voterId: string;
   mobile: string;
   address: string;
 }
-interface Methods {
-  
-}
+interface Methods {}
 const userSchema = new Schema<UserDocument, {}, Methods>(
   {
     name: {
@@ -33,10 +32,15 @@ const userSchema = new Schema<UserDocument, {}, Methods>(
       trim: true,
     },
 
-    location: {
+    state: {
       type: String,
       required: true,
-      enum: locations,
+      enum: States,
+    },
+    assembly: {
+      type: String,
+      required: true,
+      enum: Assembly,
     },
     verified: {
       type: Boolean,
@@ -77,6 +81,5 @@ const userSchema = new Schema<UserDocument, {}, Methods>(
   },
   { timestamps: true }
 );
-
 
 export default model("User", userSchema) as Model<UserDocument, {}, Methods>;

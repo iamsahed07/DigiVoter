@@ -5,11 +5,12 @@ export interface CreateUser extends Request {
     name: string;
     email: string;
     adhar: string;
-    location: string;
+    state: string;
     dob: string;
     voterId: string;
     mobile: string;
     address: string;
+    assembly: string;
   };
 }
 export interface CreateAdmin extends Request {
@@ -25,8 +26,8 @@ export interface VerifyWhenLogIn extends Request {
 
 export const role = ["Admin", "User"];
 export type roleType = "Admin" | "User";
-export const party = ["INC", "BJP", "TMC"];
-export type partyType = "INC" | "BJP" | "TMC";
+export const party = ["INC", "BJP", "TMC","BSP"];
+export type partyType = "INC" | "BJP" | "TMC" | "BSP";
 export const status = ["LIVE", "UPCOMING"];
 export type statusType = "LIVE" | "UPCOMING";
 
@@ -45,7 +46,8 @@ declare global {
         voterId: string;
         mobile: string;
         address: string;
-        age:number
+        age:number;
+        assembly:string;
       };
       token: string;
     }
