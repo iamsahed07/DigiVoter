@@ -1,4 +1,4 @@
-import { CreateUser, VerifyWhenLogIn } from "#/@types/user";
+import { CreateUser, VerifyWhenLogIn } from "#/@types";
 import EmailVerificationToken from "#/models/emailVerificationToken";
 import User from "#/models/user";
 import Election from "#/models/user";

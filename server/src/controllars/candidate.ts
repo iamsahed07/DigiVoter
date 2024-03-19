@@ -1,30 +1,57 @@
-import { partyType } from "#/@types/user";
-import { statesTypes } from "#/utils/assembly";
-import { Request, RequestHandler } from "express";
+import { requestCandidate } from "#/@types";
+import { RequestHandler } from "express";
 import Candidate from "#/models/candidate";
-interface requestCandidate extends Request {
-  body: {
-    location: statesTypes;
-    candidateName: string;
-    party: partyType;
-    assembly: string;
-  };
-}
+import CandidatesAsAssembly from "#/models/candidatesAsAssembly"
+
+
 export const addCandidate: RequestHandler = async (
   req: requestCandidate,
   res
 ) => {
   try {
-    const { candidateName, party, assembly } = req.body;
-    const candidate = new Candidate({ assembly, candidateName, party });
-    await candidate.save();
+    const {
+      name,
+      party,
+      assembly,
+      email,
+      adhar,
+      state,
+      dob,
+      voterId,
+      mobile,
+      address,
+    } = req.body;
+    const candidate = await Candidate.findOne({adhar})
+    if(candidate) return res.status(500).json({ error: "Candidate already exists", success: false });
+    const newCandidate = await Candidate.create({
+      name,
+      party,
+      assembly,
+      email,
+      adhar,
+      state,
+      dob,
+      voterId,
+      mobile,
+      address,
+    });
+    await newCandidate.save();
+
+    const candidatesAsAssembly = await CandidatesAsAssembly.findOne({assembly})
+    if(candidatesAsAssembly){
+        candidatesAsAssembly.candidates.push(newCandidate._id);
+    }else{
+        const newCandidateAsAssembly = new CandidatesAsAssembly({ assembly });
+        newCandidateAsAssembly.candidates.push(newCandidate._id);
+        await newCandidateAsAssembly.save()
+    }
     res.status(200).json({
       message: "Candidate added successfully",
-      candidate,
+      newCandidate,
       success: true,
     });
   } catch (err: any) {
-    res.status(500).json({ message: err.message, success: false });
+    res.status(500).json({ error: err.message, success: false });
   }
 };
 

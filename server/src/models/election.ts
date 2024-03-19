@@ -1,9 +1,10 @@
-import { statusType,status } from "#/@types/user";
+import { statusType, status } from "#/@types";
 import { Model, ObjectId, Schema, model } from "mongoose";
 interface electionDocument {
+  id:ObjectId
   electionName: string;
   status: statusType;
-  candidates:ObjectId[]
+  candidatesAsAssembly: ObjectId[];
 }
 const electionSchema = new Schema<electionDocument>(
   {
@@ -14,13 +15,13 @@ const electionSchema = new Schema<electionDocument>(
     status: {
       type: String,
       enum: status,
-      required:true,
-      default: "UPCOMING"
+      required: true,
+      default: "UPCOMING",
     },
-    candidates: [
+    candidatesAsAssembly: [
       {
         types: Schema.Types.ObjectId,
-        ref: "Candidate",
+        ref: "CandidatesAsAssembly",
       },
     ],
   },

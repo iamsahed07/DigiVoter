@@ -19,7 +19,13 @@ export const formatProfile = (user:UserDocument)=>{
       email: user.email,
       verified: user.verified,
       adhar: user.adhar,
-      location: user.location
+      state:user.state,
+      assembly:user.assembly,
+      role:user.role,
+      dob:user.dob,
+      voterId:user.voterId,
+      mobile:user.mobile,
+      address:user.address
     };
 }
 

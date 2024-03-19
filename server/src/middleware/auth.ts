@@ -22,12 +22,13 @@ export const mustAuth: RequestHandler = async (req, res, next) => {
     email: user.email,
     verified: user.verified,
     adhar: user.adhar,
-    location: user.location,
+    state: user.state,
     role: user.role,
     dob: user.dob,
     voterId: user.voterId,
     mobile: user.mobile,
     address: user.address,
+    assembly:user.assembly,
     age
   };
   req.token = authorizationToken;

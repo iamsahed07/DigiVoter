@@ -1,14 +1,11 @@
-import { role } from "#/@types/user";
+import { role } from "#/@types";
 import { States, Assembly, assemblyTypes, statesTypes } from "#/utils/assembly";
-import { compare, hash } from "bcrypt";
 import { Model, ObjectId, Schema, model } from "mongoose";
-import { Date } from "mongoose";
 export interface UserDocument {
   _id: ObjectId;
   name: string;
   email: string;
   verified: boolean;
-  tokens: string[]; //store auth tokens
   state: statesTypes;
   assembly: assemblyTypes;
   adhar: string;
@@ -18,8 +15,11 @@ export interface UserDocument {
   mobile: string;
   address: string;
 }
+interface Voter extends UserDocument{
+  tokens: string[]; //store auth tokens
+}
 interface Methods {}
-const userSchema = new Schema<UserDocument, {}, Methods>(
+const userSchema = new Schema<Voter, {}, Methods>(
   {
     name: {
       type: String,
@@ -55,7 +55,7 @@ const userSchema = new Schema<UserDocument, {}, Methods>(
     role: {
       type: String,
       enum: role,
-      default: "User",
+      default: "Voter",
     },
     dob: {
       type: String,
@@ -82,4 +82,4 @@ const userSchema = new Schema<UserDocument, {}, Methods>(
   { timestamps: true }
 );
 
-export default model("User", userSchema) as Model<UserDocument, {}, Methods>;
+export default model("User", userSchema) as Model<Voter, {}, Methods>;
