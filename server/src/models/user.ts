@@ -1,26 +1,25 @@
-import { role } from "#/@types/user";
-import { locations, locationsTypes } from "#/utils/locations";
-import { compare, hash } from "bcrypt";
-import { Model, ObjectId, Schema, model} from "mongoose";
-import { Date } from "mongoose";
+import { role } from "#/@types";
+import { States, Assembly, assemblyTypes, statesTypes } from "#/utils/assembly";
+import { Model, ObjectId, Schema, model } from "mongoose";
 export interface UserDocument {
   _id: ObjectId;
   name: string;
   email: string;
   verified: boolean;
-  tokens: string[]; //store auth tokens
-  location: locationsTypes;
+  state: statesTypes;
+  assembly: assemblyTypes;
   adhar: string;
   role: string;
-  dob:string;
+  dob: string;
   voterId: string;
   mobile: string;
   address: string;
 }
-interface Methods {
-  
+interface Voter extends UserDocument{
+  tokens: string[]; //store auth tokens
 }
-const userSchema = new Schema<UserDocument, {}, Methods>(
+interface Methods {}
+const userSchema = new Schema<Voter, {}, Methods>(
   {
     name: {
       type: String,
@@ -33,10 +32,15 @@ const userSchema = new Schema<UserDocument, {}, Methods>(
       trim: true,
     },
 
-    location: {
+    state: {
       type: String,
       required: true,
-      enum: locations,
+      enum: States,
+    },
+    assembly: {
+      type: String,
+      required: true,
+      enum: Assembly,
     },
     verified: {
       type: Boolean,
@@ -51,7 +55,7 @@ const userSchema = new Schema<UserDocument, {}, Methods>(
     role: {
       type: String,
       enum: role,
-      default: "User",
+      default: "Voter",
     },
     dob: {
       type: String,
@@ -78,5 +82,4 @@ const userSchema = new Schema<UserDocument, {}, Methods>(
   { timestamps: true }
 );
 
-
-export default model("User", userSchema) as Model<UserDocument, {}, Methods>;
+export default model("User", userSchema) as Model<Voter, {}, Methods>;

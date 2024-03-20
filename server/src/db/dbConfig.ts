@@ -1,11 +1,7 @@
 import mongoose from "mongoose";
 import {MONGO_URI} from '#/utils/variables'
-export async function connect(){
-    try{
-        await mongoose.connect(`${process.env.MONGO_URI}`)
-        console.log("Connection successfull!")
-
-    }catch(err){
-        console.log("There is something wrong while connecting to the database")
-    }
-}
+mongoose.connect(MONGO_URI).then(()=>{
+    console.log('db is connected')
+}).catch((err)=>{
+    console.log('db connection failed',err)
+})

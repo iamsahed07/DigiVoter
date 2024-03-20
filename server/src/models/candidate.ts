@@ -1,14 +1,13 @@
-import { party, partyType } from "#/@types/user";
-import { File } from "formidable";
+import { party, partyType, role } from "#/@types";
 import { Model, Schema, model } from "mongoose";
-interface candidateDocument {
-  candidateName: string;
+import { UserDocument } from "./user";
+import { Assembly, States } from "#/utils/assembly";
+interface candidateDocument extends UserDocument {
   party: partyType;
-  assembly: string
 }
 const candidateSchema = new Schema<candidateDocument>(
   {
-    candidateName: {
+    name: {
       type: String,
       required: true,
     },
@@ -16,14 +15,58 @@ const candidateSchema = new Schema<candidateDocument>(
       type: String,
       enum: party,
     },
-    assembly:{
-      type: String
-    }
+    email: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    state: {
+      type: String,
+      required: true,
+      enum: States,
+    },
+    assembly: {
+      type: String,
+      required: true,
+      enum: Assembly,
+    },
+    verified: {
+      type: Boolean,
+      default: false,
+    },
+    adhar: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    role: {
+      type: String,
+      enum: role,
+      default: "Candidate",
+    },
+    dob: {
+      type: String,
+      trim: true,
+      required: true,
+    },
+    voterId: {
+      type: String,
+      trim: true,
+      required: true,
+      unique: true,
+    },
+    mobile: {
+      type: String,
+      trim: true,
+      required: true,
+    },
+    address: {
+      type: String,
+      trim: true,
+      required: true,
+    },
   },
   { timestamps: true }
 );
 
-export default model(
-    "Candidate",
-    candidateSchema
-) as Model<candidateDocument>;
+export default model("Candidate", candidateSchema) as Model<candidateDocument>;
