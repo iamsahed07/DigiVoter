@@ -31,7 +31,7 @@ export const giveVote = async (req:Request, res:Response) => {
         voterRef: id,
       });
     }
-    res.status(200).json({ message: "vote give sucessfull!!", success: true });
+    res.status(200).json({ message: "vote has been given sucessfully!!", success: true });
   } catch (err: any) {
     res.status(400).json({ message: err.message, success: false });
   }
