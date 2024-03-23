@@ -6,5 +6,5 @@ import { Router } from "express";
 
 const router = Router();
 router.post("/add-candidate",validate(CandidateValidation), addCandidate); //on admin can add
-router.post("/get-based-on-assembly", getAllCandidateBasedOnAssembly)
+router.get("/get-based-on-assembly", getAllCandidateBasedOnAssembly)
 export default router;

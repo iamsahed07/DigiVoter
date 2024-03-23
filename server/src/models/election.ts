@@ -1,7 +1,7 @@
 import { statusType, status } from "#/@types";
 import { Model, ObjectId, Schema, model } from "mongoose";
 interface electionDocument {
-  id:ObjectId
+  id: ObjectId;
   electionName: string;
   status: statusType;
   candidatesAsAssembly: ObjectId[];
@@ -20,7 +20,7 @@ const electionSchema = new Schema<electionDocument>(
     },
     candidatesAsAssembly: [
       {
-        types: Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "CandidatesAsAssembly",
       },
     ],

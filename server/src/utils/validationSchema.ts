@@ -135,8 +135,7 @@ export const ElectionValidation = yup.object().shape({
   electionName: yup
     .string()
     .trim()
-    .oneOf(States, "Invalid location!")
-    .required("location is missing!"),
+    .required("Election name is missing!"),
   status: yup
     .string()
     .trim()

@@ -1,4 +1,6 @@
+
 import { Request } from "express";
+import { Schema } from "mongoose";
 export interface CreateUser extends Request {
   body: {
     name: string;
@@ -12,11 +14,19 @@ export interface CreateUser extends Request {
     assembly: string;
   };
 }
-export interface CreateAdmin extends Request {
+
+export interface CreateElection extends Request {
   body: {
-    name: string;
-    email: string;
-    password: string;
+    electionName: string;
+    status: string;
+    candidatesAsAssembly: [Schema.Types.ObjectId];
+  };
+}
+export interface GiveVote extends Request {
+  body: {
+    candidateId: Schema.Types.ObjectId;
+    electionId: Schema.Types.ObjectId;
+    candidatesAsAssemblyId: Schema.Types.ObjectId;
   };
 }
 export interface VerifyWhenLogIn extends Request {
