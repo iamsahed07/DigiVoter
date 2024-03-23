@@ -1,14 +1,17 @@
-import { Request, Response } from "express";
+import { Response } from "express";
 import VoteData from '#/models/voteData';
 import GivenVote from '#/models/givenVote'
-export const giveVote = async (req:Request, res:Response) => {
+import { GiveVote } from "#/@types";
+export const giveVote = async (req: GiveVote, res: Response) => {
   try {
-    const {id} = req.user;
-    const {candidateId,electionId,candidatesAsAssemblyId} = req.body;
+    const { id } = req.user;
+    const { candidateId, electionId, candidatesAsAssemblyId } = req.body;
 
-    const isVoted = await GivenVote.findOne({voteRef:id})
-    if(isVoted){
-        return res.status(400).json({ error: "Vote is already given!!", success: false });
+    const isVoted = await GivenVote.findOne({ voterRef: id });
+    if (isVoted) {
+      return res
+        .status(400)
+        .json({ error: "Vote is already given by the voter!!", success: false });
     }
 
     const voteData = await VoteData.findOne({ candidateRef: candidateId });
@@ -21,9 +24,11 @@ export const giveVote = async (req:Request, res:Response) => {
         voterRef: id,
       });
     } else {
-      const newVote = await VoteData.create({ candidateRef: candidateId });
-      newVote.electionRef = electionId;
-      newVote.assemblyRef = candidatesAsAssemblyId;
+      const newVote = await VoteData.create({
+        candidateRef: candidateId,
+        electionRef: electionId,
+        assemblyRef: candidatesAsAssemblyId,
+      });
       newVote.votes += 1;
       await newVote.save();
       newGivenVote = await GivenVote.create({
@@ -31,7 +36,9 @@ export const giveVote = async (req:Request, res:Response) => {
         voterRef: id,
       });
     }
-    res.status(200).json({ message: "vote has been given sucessfully!!", success: true });
+    res
+      .status(200)
+      .json({ message: "vote has been given sucessfully!!", success: true });
   } catch (err: any) {
     res.status(400).json({ message: err.message, success: false });
   }

@@ -1,5 +1,26 @@
-import Election from "#/models/user";
+import { CreateElection } from "#/@types";
+import Election from "#/models/election";
 import { Response } from "express";
+
+export const createElection = async (req: CreateElection, res: Response) => {
+  try {
+    // Destructure request body
+    const { electionName, status, candidatesAsAssembly} = req.body;
+    // Create a new election
+    const election = new Election({ electionName, status,candidatesAsAssembly});
+    await election.save();
+    res
+      .status(200)
+      .json({
+        message: "Election successfully created",
+        election,
+        success: true,
+      });
+  } catch (err:any) {
+    res.status(400).json({ error: err.message, success: false });
+  }
+};
+
 export const getAllElections = async (req: any, res: Response) => {
   try {
     const elections = await Election.find({});
@@ -15,22 +36,3 @@ export const getAllElections = async (req: any, res: Response) => {
   }
 };
 
-export const createElection = async (req: any, res: Response) => {
-  try {
-    //Destructure request body
-    const { electionName, status, candidates } = req.body;
-    //Create a new election
-    const election = new Election({ electionName, status, candidates });
-    //Save newly created election
-    await election.save();
-    res
-      .status(200)
-      .json({
-        message: "Election successfully created",
-        election,
-        success: true,
-      });
-  } catch (err: any) {
-    res.status(500).json({ message: err.message, success: false });
-  }
-};
